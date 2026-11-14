@@ -1,41 +1,42 @@
-#!/usr/bin/env python3
-
-"""BMI 計算程式"""
-
-
 def calculate_bmi(weight_kg: float, height_cm: float) -> float:
-    """計算 BMI，參數分別為體重（kg）與身高（cm）。"""
-    if weight_kg <= 0 or height_cm <= 0:
-        raise ValueError("體重與身高必須為正數。")
-
+    if height_cm <= 0 or weight_kg <= 0:
+        raise ValueError("體重和身高必須為正數。")
     height_m = height_cm / 100
     return weight_kg / (height_m ** 2)
 
 
-def classify_bmi(bmi: float) -> str:
-    """依 BMI 結果回傳分類。"""
+def get_bmi_category(bmi: float) -> str:
     if bmi < 18.5:
         return "體重過輕"
     elif bmi < 24:
         return "正常範圍"
     elif bmi < 27:
         return "過重"
-    elif bmi < 30:
-        return "輕度肥胖"
-    elif bmi < 35:
-        return "中度肥胖"
     else:
-        return "重度肥胖"
+        return "肥胖"
 
 
-def display_result(weight: float, height: float) -> None:
-    """顯示 BMI 計算結果。"""
-    bmi = calculate_bmi(weight, height)
-    result = classify_bmi(bmi)
+def main() -> None:
+    print("=== BMI 計算程式 ===")
+    print("請輸入您的身高與體重：")
 
-    print("\n=== BMI 計算結果 ===")
-    print(f"體重：{weight} kg")
-    print(f"身高：{height} cm")
-    print(f"BMI：{bmi:.2f}")
-    print(f"判定結果：{result}")
-    print("====================\n")
+    try:
+        height_cm = float(input("身高（公分，例如 170）： ").strip())
+        weight_kg = float(input("體重（公斤，例如 65）： ").strip())
+
+        bmi = calculate_bmi(weight_kg, height_cm)
+        category = get_bmi_category(bmi)
+
+        print("\n計算結果：")
+        print(f"BMI：{bmi:.2f}")
+        print(f"判定：{category}")
+
+    except ValueError as e:
+        print(f"輸入錯誤：{e}")
+        print("請確認您輸入的是有效的數字，且身高與體重皆為正數。")
+    except KeyboardInterrupt:
+        print("\n程式已被使用者中止。")
+
+
+if __name__ == "__main__":
+    main()
