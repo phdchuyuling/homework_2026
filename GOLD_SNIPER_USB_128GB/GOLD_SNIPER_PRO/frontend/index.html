@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GOLD SNIPER PRO | GC 黃金交易終端</title>
+<style>
+:root{--bg:#080b10;--panel:#111720;--panel2:#0d131b;--line:#202b38;--muted:#8290a2;--text:#e9eef5;--gold:#d9ad54;--green:#25c58a;--red:#f06470;--blue:#68a9ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% -20%,#26303a 0,transparent 45%),var(--bg);color:var(--text);font:14px/1.5 "Segoe UI","Microsoft JhengHei",sans-serif}
+.app{display:grid;grid-template-columns:238px 1fr;min-height:100vh}.sidebar{background:#0a0f15;border-right:1px solid var(--line);padding:24px 16px;display:flex;flex-direction:column;gap:25px}
+.brand{display:flex;align-items:center;gap:11px;padding:2px 8px}.logo{width:38px;height:38px;border:1px solid #876b37;border-radius:11px;display:grid;place-items:center;color:var(--gold);font-weight:800;font-size:18px;background:linear-gradient(145deg,#292316,#111720)}.brand b{letter-spacing:1.4px;font-size:13px}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px}
+.nav-label{color:#596779;font-size:10px;letter-spacing:1.7px;padding:0 12px;margin-bottom:7px}.nav button{width:100%;border:0;background:transparent;color:#91a0b2;text-align:left;padding:11px 12px;border-radius:9px;margin:2px 0;font:inherit;cursor:pointer}.nav button.active,.nav button:hover{background:#19222d;color:#f0c66f}.nav button span{display:inline-block;width:25px;color:inherit}.side-foot{margin-top:auto;border:1px solid var(--line);background:#0e151e;border-radius:12px;padding:13px;color:var(--muted);font-size:11px}
+main{min-width:0;padding:25px 28px 35px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:24px}.eyebrow{color:var(--gold);font-size:10px;letter-spacing:2px}.topbar h1{font-size:23px;margin:3px 0 0;letter-spacing:.2px}.top-actions{display:flex;align-items:center;gap:10px}.pill{border:1px solid var(--line);border-radius:30px;padding:7px 11px;color:#aeb9c7;font-size:11px;background:#111923}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--red);margin-right:6px}.btn{border:1px solid #7b6338;background:#211c12;color:#f1c978;padding:9px 13px;border-radius:8px;cursor:pointer;font-weight:600}.btn:hover{background:#342817}.btn.secondary{border-color:var(--line);background:#121a24;color:#c2ccd8}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:15px}.card,.panel{background:linear-gradient(145deg,#131b25,#0e141c);border:1px solid var(--line);border-radius:13px}.metric{padding:15px 16px}.metric .label{color:var(--muted);font-size:11px}.metric .value{font-size:23px;font-weight:700;margin:6px 0 2px;letter-spacing:.3px}.metric .sub{font-size:10px;color:#748396}.gold{color:var(--gold)}.green{color:var(--green)}.red{color:var(--red)}
+.grid-main{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(285px,.85fr);gap:14px}.panel{padding:17px;margin-bottom:14px;min-width:0}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.panel h2{font-size:13px;margin:0;letter-spacing:.3px}.muted{color:var(--muted);font-size:11px}.chart-wrap{height:285px;position:relative;background:linear-gradient(180deg,#0d151e,#0a1017);border:1px solid #1c2935;border-radius:9px;overflow:hidden}.chart-wrap svg{width:100%;height:100%;display:block}.chart-note{position:absolute;top:10px;left:12px;background:#111b27dd;padding:5px 8px;border-radius:5px;font-size:10px;color:#9caabd}
+.tf{display:flex;gap:5px}.tf button{background:#111a24;border:1px solid var(--line);color:#8796a8;padding:5px 9px;border-radius:6px;cursor:pointer;font-size:10px}.tf button.active{color:var(--gold);border-color:#81683a}
+.signal{padding:14px;border-radius:10px;border:1px solid #264638;background:linear-gradient(120deg,#10231e,#101922);margin-bottom:10px}.signal.sell{border-color:#56313a;background:linear-gradient(120deg,#29171c,#141923)}.signal-top{display:flex;justify-content:space-between;align-items:center}.tag{font-size:10px;font-weight:700;letter-spacing:1px;padding:4px 8px;border-radius:5px;background:#143d30;color:#5be0ae}.sell .tag{background:#48242b;color:#ff8790}.score{font-size:12px;color:var(--gold)}.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}.level{background:#0b1219;border:1px solid #1e2b36;border-radius:7px;padding:8px}.level small{display:block;color:var(--muted);font-size:9px}.level b{font-size:12px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:9px}.check{display:flex;justify-content:space-between;padding:9px 10px;background:#0d151e;border:1px solid #1e2935;border-radius:7px;font-size:11px}.pass{color:var(--green)}.wait{color:var(--gold)}
+.status-list{display:grid;gap:10px}.status-row{display:flex;justify-content:space-between;align-items:center;font-size:11px}.status-row span:first-child{color:#9ba9b9}.status-off{color:var(--red)}.status-demo{color:var(--gold)}
+table{width:100%;border-collapse:collapse;font-size:11px}th{text-align:left;color:#7e8da0;font-weight:500;padding:9px 8px;border-bottom:1px solid var(--line)}td{padding:11px 8px;border-bottom:1px solid #1a2430}tr:last-child td{border:0}
+.footer-note{font-size:10px;color:#68788b;margin-top:10px}.page{display:none}.page.active{display:block}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field label{display:block;color:var(--muted);font-size:11px;margin-bottom:6px}.field input,.field select{width:100%;padding:10px;background:#0b121a;border:1px solid var(--line);border-radius:7px;color:var(--text);font:inherit}.field input:focus{outline:1px solid var(--gold)}.wide{grid-column:1/-1}.toast{position:fixed;right:22px;bottom:22px;background:#17251f;border:1px solid #2e654d;color:#b8f3d8;padding:12px 16px;border-radius:9px;display:none;box-shadow:0 10px 35px #0008}
+@media(max-width:1050px){.cards{grid-template-columns:repeat(2,1fr)}.grid-main{grid-template-columns:1fr}.app{grid-template-columns:205px 1fr}}
+@media(max-width:700px){.app{display:block}.sidebar{padding:12px;position:static;border-right:0;border-bottom:1px solid var(--line)}.brand{padding:3px}.nav{display:flex;overflow:auto;gap:4px}.nav-label{display:none}.nav button{white-space:nowrap;width:auto;padding:8px}.nav button span{width:auto;margin-right:5px}.side-foot{display:none}main{padding:18px 13px}.topbar{align-items:flex-start;flex-direction:column}.cards{gap:8px}.metric{padding:12px}.metric .value{font-size:19px}.form-grid{grid-template-columns:1fr}.wide{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">G</div><div><b>GOLD SNIPER PRO</b><small>GC FUTURES TERMINAL</small></div></div>
+  <div><div class="nav-label">WORKSPACE</div><nav class="nav">
+    <button class="active" data-page="overview"><span>▦</span>交易總覽</button>
+    <button data-page="signals"><span>⌖</span>進場訊號</button>
+    <button data-page="analysis"><span>◫</span>ICT / SMC 分析</button>
+    <button data-page="history"><span>◷</span>交易歷史</button>
+    <button data-page="performance"><span>▥</span>績效分析</button>
+  </nav></div>
+  <div><div class="nav-label">SYSTEM</div><nav class="nav"><button data-page="settings"><span>⚙</span>系統設定</button></nav></div>
+  <div class="side-foot"><div style="color:#d9ad54;margin-bottom:5px">● DEMO / OFFLINE</div>此版本為本機介面展示。尚未連接真實行情、TradingView Webhook 或 Telegram。</div>
+</aside>
+<main>
+  <header class="topbar"><div><div class="eyebrow">COMEX GOLD FUTURES · GC</div><h1 id="pageTitle">交易總覽</h1></div><div class="top-actions"><div class="pill" id="apiStatus"><i class="dot"></i>後端檢查中</div><div class="pill" id="modeStatus">模式：等待訊號</div><button class="btn" onclick="toast('目前為展示模式，尚未連接真實訊號來源。')">系統狀態</button></div></header>
+
+  <section class="page active" id="overview">
+    <div class="cards">
+      <div class="card metric"><div class="label">GC 行情狀態</div><div class="value gold">OFFLINE</div><div class="sub">等待 TradingView / 行情來源</div></div>
+      <div class="card metric"><div class="label">今日訊號</div><div class="value">—</div><div class="sub">尚無真實訊號資料</div></div>
+      <div class="card metric"><div class="label">策略評分門檻</div><div class="value gold">85<span style="font-size:12px"> / 100</span></div><div class="sub">低於門檻不推送</div></div>
+      <div class="card metric"><div class="label">最低風險報酬比</div><div class="value">1 : 2</div><div class="sub">RR 過濾條件</div></div>
+    </div>
+    <div class="grid-main">
+      <div>
+        <div class="panel"><div class="panel-head"><h2>GC 黃金價格圖表</h2><div class="tf"><button>5M</button><button>15M</button><button class="active">1H</button></div></div>
+          <div class="chart-wrap"><div class="chart-note">示意圖 · 非即時行情</div><svg viewBox="0 0 800 280" preserveAspectRatio="none" aria-label="示意 K 線圖">
+          <defs><pattern id="grid" width="80" height="46" patternUnits="userSpaceOnUse"><path d="M80 0H0V46" fill="none" stroke="#23303d" stroke-width="1"/></pattern></defs><rect width="800" height="280" fill="url(#grid)"/>
+          <g stroke-width="2"><path d="M40 188V142 M55 170V112 M70 160V128 M85 145V90 M100 132V101 M115 150V115 M130 160V125 M145 145V105 M160 130V85 M175 119V73 M190 135V95 M205 148V110 M220 140V102 M235 125V83 M250 112V68 M265 130V88 M280 150V110 M295 140V96 M310 122V78 M325 110V64 M340 125V85 M355 145V105 M370 130V88 M385 116V70 M400 100V58 M415 112V72 M430 130V88 M445 118V76 M460 105V61 M475 95V52 M490 111V70 M505 128V86 M520 117V74 M535 100V56 M550 90V45 M565 106V65 M580 122V80 M595 110V68 M610 94V50 M625 80V39 M640 96V57 M655 115V74 M670 103V61 M685 88V46 M700 75V32 M715 92V50 M730 108V66 M745 95V54" stroke="#25c58a"/>
+          <path d="M40 165H50V148H60V160H70V140H80V120H90V132H100V110H110V130H120V145H130V136H140V115H150V125H160V100H170V88H180V110H190V120H200V130H210V118H220V110H230V95H240V105H250V82H260V100H270V135H280V125H290V110H300V92H310V105H320V78H330V90H340V115H350V125H360V110H370V95H380V82H390V70H400V90H410V100H420V115H430V98H440V88H450V72H460V80H470V60H480V90H490V110H500V100H510V115H520V95H530V75H540V62H550V85H560V105H570V115H580V98H590V80H600V65H610V82H620V58H630V75H640V100H650V108H660V90H670V75H680V60H690V48H700V65H710V82H720V100H730V90H740V72H750" fill="none" stroke="#25c58a" stroke-width="5" opacity=".8"/>
+          </g><path d="M0 88H800" stroke="#d9ad54" stroke-dasharray="5 5" opacity=".8"/><text x="770" y="80" fill="#d9ad54" font-size="10" text-anchor="end">示意價格線</text></svg></div><div class="footer-note">圖表目前僅為版面示意，沒有連接即時報價。請勿依示意 K 線交易。</div>
+        </div>
+        <div class="panel"><div class="panel-head"><h2>最新訊號</h2><span class="muted">等待 TradingView Webhook</span></div><div id="latestSignal" class="muted" style="padding:25px;text-align:center">正在連接本機訊號服務…</div></div>
+      </div>
+      <div>
+        <div class="panel"><div class="panel-head"><h2>多週期市場狀態</h2><span class="muted">未連線</span></div><div class="status-list">
+          <div class="status-row"><span>1H · HTF Bias</span><b class="status-off">等待資料</b></div><div class="status-row"><span>15M · Market Structure</span><b class="status-off">等待資料</b></div><div class="status-row"><span>5M · Entry Confirmation</span><b class="status-off">等待資料</b></div></div></div>
+        <div class="panel"><div class="panel-head"><h2>ICT / SMC 條件監控</h2><span class="muted">即時檢查</span></div><div class="checks">
+          <div class="check"><span>Liquidity Sweep</span><b class="wait">待確認</b></div><div class="check"><span>MSS / CHoCH</span><b class="wait">待確認</b></div><div class="check"><span>Fair Value Gap</span><b class="wait">待確認</b></div><div class="check"><span>Order Block</span><b class="wait">待確認</b></div><div class="check"><span>Retest</span><b class="wait">待確認</b></div><div class="check"><span>Risk / Reward</span><b class="wait">待確認</b></div></div></div>
+        <div class="panel"><div class="panel-head"><h2>連線監控</h2></div><div class="status-list"><div class="status-row"><span>Web API</span><b class="status-demo">未啟動</b></div><div class="status-row"><span>TradingView Webhook</span><b class="status-off">OFFLINE</b></div><div class="status-row"><span>Telegram Bot</span><b class="status-off">未設定</b></div><div class="status-row"><span>資料庫</span><b class="status-demo">未連接</b></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="signals"><div class="panel"><div class="panel-head"><h2>進場訊號中心</h2><span class="pill">Score ≥ 85 · RR ≥ 1:2</span></div><div id="signalList" class="muted" style="padding:45px;text-align:center">正在載入訊號…</div></div></section>
+  <section class="page" id="analysis"><div class="panel"><div class="panel-head"><h2>ICT / SMC 多週期分析</h2><span class="pill">1H → 15M → 5M</span></div><div class="checks"><div class="check"><span>HTF Trend</span><b class="wait">等待行情</b></div><div class="check"><span>Premium / Discount</span><b class="wait">等待行情</b></div><div class="check"><span>BSL / SSL Sweep</span><b class="wait">等待行情</b></div><div class="check"><span>BOS / MSS</span><b class="wait">等待行情</b></div><div class="check"><span>FVG / Imbalance</span><b class="wait">等待行情</b></div><div class="check"><span>Order Block</span><b class="wait">等待行情</b></div></div></div></section>
+  <section class="page" id="history"><div class="panel"><div class="panel-head"><h2>交易歷史</h2><span class="muted">策略訊號與實際成交分開統計</span></div><div class="muted" style="padding:40px;text-align:center">目前沒有歷史資料。</div></div></section>
+  <section class="page" id="performance"><div class="cards"><div class="card metric"><div class="label">勝率</div><div class="value">—</div><div class="sub">需要足夠已結束交易</div></div><div class="card metric"><div class="label">Profit Factor</div><div class="value">—</div><div class="sub">尚無績效資料</div></div><div class="card metric"><div class="label">Net R</div><div class="value">—</div><div class="sub">尚無績效資料</div></div><div class="card metric"><div class="label">最大回撤</div><div class="value">—</div><div class="sub">尚無績效資料</div></div></div><div class="panel"><h2>績效統計</h2><p class="muted">收到並追蹤實際訊號與交易結果後，才會計算勝率、Profit Factor、Net R 與最大回撤。不會預填虛構績效。</p></div></section>
+  <section class="page" id="settings">
+    <div class="panel"><div class="panel-head"><h2>策略設定</h2><span class="pill">本機展示設定</span></div><div class="form-grid">
+      <div class="field"><label>交易商品</label><input value="GC · COMEX Gold Futures" readonly></div>
+      <div class="field"><label>主要進場週期</label><select><option>5 分鐘</option></select></div>
+      <div class="field"><label>最低訊號分數</label><input id="score" type="number" min="1" max="100" value="85"></div>
+      <div class="field"><label>最低風險報酬比</label><input id="rr" type="number" min="1" step=".1" value="2.0"></div>
+      <div class="field"><label>Telegram Bot Token</label><input type="password" placeholder="尚未設定（不會傳送或儲存）"></div>
+      <div class="field"><label>Telegram Chat ID</label><input placeholder="尚未設定"></div>
+      <div class="field wide"><button class="btn" onclick="toast('此獨立網頁尚未連接後端，設定不會被儲存。')">儲存設定</button> <button class="btn secondary" onclick="toast('尚未連接 Telegram Bot API。')">測試 Telegram</button></div>
+    </div><p class="footer-note">安全提醒：不要將真實 Bot Token 填入此展示版。正式版應由後端安全儲存。</p></div>
+    <div class="panel"><h2>系統連線</h2><div class="status-list" style="margin-top:15px"><div class="status-row"><span>TradingView Webhook</span><b class="status-off">尚未設定</b></div><div class="status-row"><span>行情來源</span><b class="status-off">尚未設定</b></div><div class="status-row"><span>HTTPS / Tunnel</span><b class="status-off">尚未設定</b></div></div></div>
+  </section>
+  <div class="footer-note">GOLD SNIPER PRO · 僅供交易研究與訊號管理。85 分是策略篩選門檻，不代表 85% 勝率。期貨交易有重大風險。</div>
+</main></div><div class="toast" id="toast"></div>
+<script>
+const titles={overview:"交易總覽",signals:"進場訊號中心",analysis:"ICT / SMC 分析",history:"交易歷史",performance:"績效分析",settings:"系統設定"};
+document.querySelectorAll('.nav button[data-page]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(b.dataset.page).classList.add('active');document.getElementById('pageTitle').textContent=titles[b.dataset.page]}));
+document.querySelectorAll('.tf button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tf button').forEach(x=>x.classList.remove('active'));b.classList.add('active');toast('目前為圖表示意模式，未載入 '+b.textContent+' 真實 K 線。')}));
+let toastTimer;function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.style.display='none',3000)}
+
+async function refreshTradingView(){
+  const statusEl=document.getElementById('apiStatus');
+  const modeEl=document.getElementById('modeStatus');
+  try{
+    const r=await fetch('/api/status',{cache:'no-store'});
+    if(!r.ok) throw new Error('API unavailable');
+    const s=await r.json();
+    statusEl.innerHTML='<i class="dot" style="background:#25c58a"></i>後端 ONLINE';
+    modeEl.textContent='模式：'+(s.mode||'LIVE BRIDGE');
+    const latest=await fetch('/api/signals/latest',{cache:'no-store'}).then(x=>x.json());
+    const box=document.getElementById('latestSignal');
+    const list=document.getElementById('signalList');
+    if(latest && latest.signal){
+      const x=latest.signal, isLong=x.direction==='LONG'||x.direction==='BUY';
+      const cls=isLong?'':' sell';
+      const dir=isLong?'BUY':'SELL';
+      const fmt=v=>v===null||v===undefined?'—':Number(v).toFixed(2);
+      box.innerHTML=`<div class="signal${cls}"><div class="signal-top"><span class="tag">${dir}</span><span class="score">Score ${x.score??'—'} / 100</span></div><div style="margin-top:10px;font-size:12px">GC · ${x.timeframe||'5'}M · ${x.signal_id||''}</div><div class="levels"><div class="level"><small>ENTRY</small><b>${fmt(x.entry)}</b></div><div class="level"><small>STOP LOSS</small><b>${fmt(x.sl)}</b></div><div class="level"><small>TP2</small><b>${fmt(x.tp2)}</b></div></div><div class="footer-note">接收時間：${x.received_at||x.timestamp||'—'}</div></div>`;
+      list.innerHTML=box.innerHTML;
+    } else {
+      box.textContent='後端已連線，等待 TradingView 訊號。';
+      list.textContent='目前沒有已接收的訊號。';
+    }
+  }catch(e){
+    statusEl.innerHTML='<i class="dot"></i>後端 OFFLINE';
+    modeEl.textContent='模式：未連線';
+    const box=document.getElementById('latestSignal');
+    if(box) box.textContent='無法連接本機後端。請先執行 start.bat。';
+  }
+}
+refreshTradingView(); setInterval(refreshTradingView,3000);
+
+</script>
+</body></html>
