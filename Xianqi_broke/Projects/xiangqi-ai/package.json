@@ -1,0 +1,6 @@
+{
+  "name": "xiangqi-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offline browser Chinese chess game with AI"
+}

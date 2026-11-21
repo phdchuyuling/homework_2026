@@ -1,0 +1,19 @@
+xiangqi-ai/
+├── .vscode/
+│   └── settings.json
+├── assets/
+│   └── README.md
+├── css/
+│   └── style.css
+├── docs/
+│   └── PROJECT_STRUCTURE.md
+├── js/
+│   ├── engine.js
+│   └── main.js
+├── tests/
+│   └── README.md
+├── index.html
+├── RUN_GAME.bat
+├── package.json
+├── README.md
+└── PROJECT_TREE.txt
