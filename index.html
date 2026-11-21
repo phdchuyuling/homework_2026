@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今天吃什麼？｜外食族食物刮刮樂</title>
+    <!-- 引入 Tailwind CSS 確保手機排版美觀 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #fff8ef;
+            color: #493b35;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-6 px-4">
+
+    <!-- 標題區域 -->
+    <div class="text-center mb-6">
+        <h1 class="text-3xl font-bold mb-1">今天吃什麼？</h1>
+        <p class="text-sm text-[#8e7e72]">讓美食小精靈幫你終結選擇障礙 ✨</p>
+    </div>
+
+    <!-- 分類按鈕選單 -->
+    <div id="tabs" class="flex gap-2 mb-5 overflow-x-auto max-w-full pb-2">
+        <!-- 動態產生 -->
+    </div>
+
+    <!-- 提示文字 -->
+    <div id="category-hint" class="text-xs text-[#8e7e72] mb-3 text-center">
+        <!-- 動態產生 -->
+    </div>
+
+    <!-- 抽獎卡片區域 -->
+    <div class="w-full max-w-md bg-[#fffdf9] border border-[#f2e5d9] rounded-2xl p-6 text-center shadow-sm mb-5">
+        <div id="card-emoji" class="text-6xl mb-3">🎁</div>
+        <h2 id="card-title" class="text-xl font-bold mb-2">準備好抽取今天的美食了嗎？</h2>
+        <p id="card-subtitle" class="text-sm text-[#8e7e72]">選好分類，按下按鈕讓命運幫你決定！</p>
+    </div>
+
+    <!-- 互動按鈕 -->
+    <div class="w-full max-w-md flex flex-col gap-3 mb-6">
+        <button id="draw-btn" onclick="drawFood()" class="w-full bg-[#ed8c83] hover:bg-[#d96e6a] text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition active:scale-95 text-lg cursor-pointer">
+            🎟️ 抽今日美食
+        </button>
+        <button id="favorite-btn" onclick="addFavorite()" disabled class="w-full bg-[#fff0e7] hover:bg-[#ffe2d4] text-[#493b35] font-bold py-3 px-6 rounded-xl transition disabled:opacity-50 cursor-pointer">
+            💛 加入今日最愛
+        </button>
+    </div>
+
+    <!-- 今日小筆記區域 -->
+    <div class="w-full max-w-md bg-[#fffdf9] border border-[#f2e5d9] rounded-2xl p-4 shadow-sm">
+        <div class="flex justify-between items-center mb-2">
+            <h3 class="font-bold text-base">📝 今日小筆記</h3>
+            <button onclick="clearNotes()" class="text-xs text-[#8e7e72] hover:text-red-500 cursor-pointer">清空</button>
+        </div>
+        <ul id="note-list" class="text-sm space-y-1.5 max-h-40 overflow-y-auto text-left">
+            <!-- 動態產生 -->
+        </ul>
+    </div>
+
+    <!-- JavaScript 邏輯 -->
+    <script>
+        const FOODS = {
+            "🔥 餓鬼救星": [
+                ["🍣", "日式壽司"], ["🍜", "日式拉麵"], ["🍛", "日式咖哩"],
+                ["🍔", "美式起司漢堡"], ["🍕", "美式披薩"], ["🍗", "美式炸雞"],
+                ["🥢", "中式麵食"], ["🍱", "中式便當"], ["🥟", "小籠包"],
+                ["🍲", "暖心火鍋"], ["🥩", "香烤燒肉"], ["🥗", "健康沙拉碗"],
+                ["🍝", "義大利麵"], ["🌮", "墨西哥捲餅"], ["🍛", "泰式綠咖哩"],
+                ["🍖", "日式豬排飯"], ["🥘", "海鮮燉飯"], ["🥪", "總匯三明治"],
+                ["🍜", "越式牛肉河粉"], ["🍱", "港式燒臘飯"]
+            ],
+            "🍪 下午解饞": [
+                ["🍰", "草莓蛋糕"], ["🍮", "焦糖布丁"], ["🍩", "甜甜圈"],
+                ["🍦", "繽紛冰淇淋"], ["🧋", "珍珠奶茶加料"], ["🍧", "綿綿剉冰"],
+                ["🍢", "鹹酥雞小點"], ["🍟", "酥脆薯條"], ["🥐", "奶油可頌"],
+                ["🥯", "活力貝果"], ["🧇", "鬆餅小確幸"], ["🍪", "手工餅乾"],
+                ["🍫", "濃郁巧克力"], ["🍡", "日式糰子"], ["🍧", "芒果冰沙"],
+                ["🥮", "綠豆椪"], ["🧁", "杯子蛋糕"], ["🥧", "蘋果派"],
+                ["🍿", "焦糖爆米花"], ["🍢", "黑輪串"]
+            ],
+            "🧋 手搖命脈": [
+                ["🧋", "手搖珍珠奶茶"], ["🍵", "清香綠茶"], ["🥤", "香醇奶茶"],
+                ["☕", "暖心咖啡"], ["🧊", "冰美式咖啡"], ["🍊", "鮮榨果汁"],
+                ["🥭", "芒果奶昔"], ["🍓", "草莓優格飲"], ["🫧", "沁涼氣泡飲"],
+                ["🍋", "檸檬冬瓜茶"], ["🥛", "濃郁可可牛奶"], ["🍑", "蜜桃烏龍茶"],
+                ["🧃", "葡萄柚綠茶"], ["🍵", "抹茶拿鐵"], ["🧋", "芋頭鮮奶波霸"],
+                ["🥤", "冬瓜檸檬"], ["🧉", "仙草蜜茶"], ["🍼", "黑糖珍珠鮮奶"],
+                ["🍹", "熱帶水果茶"], ["🧋", "四季春青茶"]
+            ]
+        };
+
+        const PENALTIES = [
+            ["🥬", "選擇障礙大懲罰！今天強制乖乖吃【健康沙拉碗】或水煮餐！"],
+            ["💧", "猶豫太久囉！懲罰你今天只能喝白開水配空氣！"],
+            ["🎲", "命運之神的制裁！直接聽從隔壁同事或朋友幫你隨便點一個！"],
+            ["💸", "猶豫不決罰錢包失血！今天午餐自動升級加點一份豪華炸雞！"],
+            ["🧊", "心神不定懲罰！飲料強制只能點「無糖去冰」！"],
+            ["🏃", "猶豫太久罰你走路去買！來回至少 2 公里運動健身！"],
+            ["🧄", "重口味制裁！今天所有食物必須加爆大蒜或辣椒！"],
+            ["⏱️", "拖延症懲罰！限你在 3 分鐘之內隨便盲選一家下單！"],
+            ["🪑", "罰站反省 3 分鐘，然後乖乖接受命運的安排！"],
+            ["📵", "吃飯時禁止滑手機！專心品嚐今天抽到的第一道美食！"],
+            ["🧧", "請客懲罰！今天飲料由你出資請抽中的幸運兒喝一杯！"],
+            ["🧅", "挑食大懲罰！今天點餐絕對不能把洋蔥或青蔥挑掉！"],
+            ["🪞", "對著鏡子稱贊自己 3 次「我是果斷的決策大師」才能吃飯！"],
+            ["🐱", "學貓咪叫一聲「喵～」才能解鎖今天的用餐權限！"],
+            ["🧘", "深呼吸 5 次，放下心中的選擇障礙，吃什麼都香！"],
+            ["🍳", "外食神明發怒！懲罰你今天回家自己動手煮泡麵！"],
+            ["☕", "咖啡因禁令！今天不准喝任何手搖飲與咖啡！"],
+            ["📝", "寫下一百字「今日午餐心得報告」才能把餐點吃完！"],
+            ["🥶", "極端懲罰！今天不管多熱都只能喝溫熱開水！"],
+            ["👑", "大王饒命！今天由同行友人幫你決定要吃哪一家店！"]
+        ];
+
+        let currentCategory = "🔥 餓鬼救星";
+        let currentResult = null;
+        let isBusy = false;
+        let rejectCount = 0;
+        let savedNotes = JSON.parse(localStorage.getItem("food_notes")) || [];
+
+        // 初始化分頁按鈕
+        function initTabs() {
+            const tabsContainer = document.getElementById("tabs");
+            tabsContainer.innerHTML = "";
+            Object.keys(FOODS).forEach(cat => {
+                const btn = document.createElement("button");
+                btn.innerText = cat;
+                btn.className = `px-4 py-2 rounded-xl font-bold text-sm transition whitespace-nowrap cursor-pointer ${cat === currentCategory ? 'bg-[#ed8c83] text-white shadow-sm' : 'bg-[#fff0e7] text-[#493b35] hover:bg-[#ffe2d4]'}`;
+                btn.onclick = () => selectCategory(cat);
+                btn.id = `tab-${cat}`;
+                tabsContainer.appendChild(btn);
+            });
+            updateHint();
+        }
+
+        function selectCategory(cat) {
+            if (isBusy) return;
+            currentCategory = cat;
+            Object.keys(FOODS).forEach(c => {
+                const b = document.getElementById(`tab-${c}`);
+                if (c === cat) {
+                    b.className = "px-4 py-2 rounded-xl font-bold text-sm transition whitespace-nowrap bg-[#ed8c83] text-white shadow-sm cursor-pointer";
+                } else {
+                    b.className = "px-4 py-2 rounded-xl font-bold text-sm transition whitespace-nowrap bg-[#fff0e7] text-[#493b35] hover:bg-[#ffe2d4] cursor-pointer";
+                }
+            });
+            updateHint();
+            if (!currentResult) {
+                document.getElementById("card-emoji").innerText = cat.includes("餓鬼") ? "🔥" : (cat.includes("下午") ? "🍪" : "🧋");
+            }
+        }
+
+        function updateHint() {
+            document.getElementById("category-hint").innerText = `✨ 目前選擇：${currentCategory}（內含 ${FOODS[currentCategory].length} 種美味陷阱）`;
+        }
+
+        // 抽獎邏輯
+        function drawFood() {
+            if (isBusy) return;
+
+            if (currentResult !== null) {
+                rejectCount++;
+            } else {
+                rejectCount = 0;
+            }
+
+            // 連續 3 次不喜歡觸發懲罰
+            if (rejectCount >= 3) {
+                rejectCount = 0;
+                const penalty = PENALTIES[Math.floor(Math.random() * PENALTIES.length)];
+                currentResult = [penalty[0], "懲罰餐點"];
+                document.getElementById("card-emoji").innerText = penalty[0];
+                document.getElementById("card-title").innerText = "⚠️ 選擇障礙大爆炸！觸發懲罰！";
+                document.getElementById("card-subtitle").innerText = penalty[1];
+                alert(`【美食精靈森七七】\n${penalty[1]}\n\n連續拒絕 3 次，快去接受命運的制裁吧 😂`);
+                document.getElementById("draw-btn").innerText = "🔄 不服！再抽一次！";
+                document.getElementById("favorite-btn").removeAttribute("disabled");
+                return;
+            }
+
+            isBusy = true;
+            const drawBtn = document.getElementById("draw-btn");
+            const favBtn = document.getElementById("favorite-btn");
+            drawBtn.setAttribute("disabled", "true");
+            drawBtn.innerText = "✨ 命運輪盤轉動中…";
+            favBtn.setAttribute("disabled", "true");
+
+            document.getElementById("card-title").innerText = "刮刮刮……命運即將揭曉！";
+            document.getElementById("card-subtitle").innerText = "看看今天哪位幸運美食被你翻牌了呢？";
+
+            const frames = ["🎁", "✨", "🍽️", "💫", "🎉"];
+            let step = 0;
+
+            const interval = setInterval(() => {
+                document.getElementById("card-emoji").innerText = frames[step % frames.length];
+                step++;
+                if (step > 7) {
+                    clearInterval(interval);
+                    const pool = FOODS[currentCategory];
+                    currentResult = pool[Math.floor(Math.random() * pool.length)];
+                    
+                    document.getElementById("card-emoji").innerText = currentResult[0];
+                    document.getElementById("card-title").innerText = `恭喜！今天的天選之子是：\n${currentResult[1]}！`;
+                    document.getElementById("card-subtitle").innerText = "就是它了！快去大快朵頤吧～ 😋";
+                    
+                    isBusy = false;
+                    drawBtn.removeAttribute("disabled");
+                    drawBtn.innerText = "🔄 不喜歡！再抽一次！";
+                    favBtn.removeAttribute("disabled");
+                }
+            }, 110);
+        }
+
+        // 收藏至筆記
+        function addFavorite() {
+            if (!currentResult) return;
+            const item = { category: currentCategory, emoji: currentResult[0], name: currentResult[1] };
+            
+            // 檢查重複
+            if (savedNotes.some(n => n.name === item.name && n.category === item.category)) {
+                alert("這個美食已經在今日小筆記裡躺好了！");
+                return;
+            }
+
+            savedNotes.push(item);
+            localStorage.setItem("food_notes", JSON.stringify(savedNotes));
+            renderNotes();
+        }
+
+        function renderNotes() {
+            const listEl = document.getElementById("note-list");
+            listEl.innerHTML = "";
+            if (savedNotes.length === 0) {
+                listEl.innerHTML = `<li class="text-xs text-[#8e7e72] text-center py-2">還沒有收編美食，抽到心動的就把它記下來吧！</li>`;
+                return;
+            }
+            savedNotes.forEach((note, index) => {
+                const li = document.createElement("li");
+                li.className = "flex justify-between items-center bg-[#fff8ef] px-3 py-1.5 rounded-lg text-xs";
+                li.innerHTML = `<span>${note.emoji} ${note.name} <span class="text-gray-400">· ${note.category}</span></span>` +
+                               `<button onclick="removeNote(${index})" class="text-red-400 hover:text-red-600 ml-2">✖</button>`;
+                listEl.appendChild(li);
+            });
+        }
+
+        function removeNote(index) {
+            savedNotes.splice(index, 1);
+            localStorage.setItem("food_notes", JSON.stringify(savedNotes));
+            renderNotes();
+        }
+
+        function clearNotes() {
+            if (savedNotes.length === 0) return;
+            if (confirm("確定要倒掉所有收藏嗎？")) {
+                savedNotes = [];
+                localStorage.removeItem("food_notes");
+                renderNotes();
+            }
+        }
+
+        // 頁面載入初始化
+        window.onload = () => {
+            initTabs();
+            renderNotes();
+        };
+    </script>
+</body>
+</html>
